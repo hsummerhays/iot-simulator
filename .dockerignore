@@ -1,0 +1,31 @@
+# Git & local directories
+.git/
+.gitignore
+.dockerignore
+.tmp/
+scratch/
+
+# Certificates & AWS IoT keys / credentials (MUST NOT be baked into images)
+certs/
+*.pem
+*.pem.crt
+*.pem.key
+*.crt
+*.key
+
+# Environment secrets
+.env
+.env.*
+*.log
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# AWS IoT policies
+policy.json
+policy_utf8.json

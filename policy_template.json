@@ -1,0 +1,7 @@
+{
+    "policyArn": "arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:policy/MySimulatedDevice-Policy",
+    "policyName": "MySimulatedDevice-Policy",
+    "policyDocument": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iot:Publish\",\n        \"iot:Receive\",\n        \"iot:PublishRetain\"\n      ],\n      \"Resource\": [\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:topic/sdk/test/java\",\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:topic/sdk/test/python\",\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:topic/sdk/test/js\"\n      ]\n    },\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iot:Subscribe\"\n      ],\n      \"Resource\": [\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:topicfilter/sdk/test/java\",\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:topicfilter/sdk/test/python\",\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:topicfilter/sdk/test/js\"\n      ]\n    },\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iot:Connect\"\n      ],\n      \"Resource\": [\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:client/sdk-java\",\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:client/basicPubSub\",\n        \"arn:aws:iot:<AWS_REGION>:<AWS_ACCOUNT_ID>:client/sdk-nodejs-*\"\n      ]\n    }\n  ]\n}",
+    "policyVersionId": "1",
+    "isDefaultVersion": true
+}
