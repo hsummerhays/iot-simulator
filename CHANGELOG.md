@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- Implemented robust lifecycle and reconnection callbacks (`on_connection_interrupted`, `on_connection_resumed`, `on_connection_success`, `on_connection_failure`, `on_connection_closed`) to surface automatic reconnection and exponential backoff behavior under intermittent networks.
+- Added QoS 1 delivery confirmation tracking: waiting on and logging the `PUBACK` response along with packet IDs and sequence numbers.
+- Added configurable dynamic telemetry simulation with drift modeling (`SIM_BASE_TEMP`, `SIM_TEMP_VARIATION`, `SIM_PUBLISH_INTERVAL_SECS`), incrementing sequence numbers, and Unix timestamps.
 - Created [.gitignore](.gitignore) covering certificates, keys (`certs/`, `*.pem`, `*.key`, `*.crt`), local environment files (`.env`), raw AWS IoT policies (`policy.json`, `policy_utf8.json`), and Python virtual environments.
 - Added [.dockerignore](.dockerignore) to prevent certificates, local `.env` secrets, and build artifacts from ever leaking into Docker images.
 - Added [.env.example](.env.example) configuration template.

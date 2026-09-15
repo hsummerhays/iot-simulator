@@ -11,7 +11,10 @@ A lightweight Python client and container setup for simulating an IoT device pub
 - **Endpoint**: ATS (Amazon Trust Services) endpoint (`<id>-ats.iot.<region>.amazonaws.com`)
 - **Default Topic**: `sdk/test/python`
 - **Default Client ID**: `basicPubSub`
-- **Sample Payload**: `{"temperature": 25.6, "status": "active"}` every 5 seconds
+- **Dynamic Telemetry**: Emulates sensor temperature drift (`SIM_BASE_TEMP`, `SIM_TEMP_VARIATION`), sequence indexing (`seq`), timestamps, and device status
+- **Delivery Guarantee**: MQTT QoS 1 (`AT_LEAST_ONCE`) with explicit broker acknowledgement (`PUBACK`) tracking
+- **Resilience**: Automatic reconnection with exponential backoff and SDK lifecycle callbacks (`on_connection_interrupted`, `on_connection_resumed`)
+- **Graceful Shutdown**: `finally` block ensuring proper disconnection on termination signals or unexpected errors
 
 ---
 
@@ -76,6 +79,9 @@ Configure your parameters:
 - `AWS_IOT_TOPIC`: Target MQTT topic
 - `AWS_IOT_CERT_FILE`, `AWS_IOT_KEY_FILE`, `AWS_IOT_ROOT_CA_FILE`: Filenames matching your files in `certs/`
 - `AWS_IOT_CERT_ID` & `AWS_REGION`: Used for the PowerShell diagnostics script
+- `SIM_PUBLISH_INTERVAL_SECS`: Telemetry publish cadence in seconds (default: `5.0`)
+- `SIM_BASE_TEMP`: Baseline simulation temperature in Celsius (default: `25.0`)
+- `SIM_TEMP_VARIATION`: Random temperature variance range `±Δ` (default: `1.5`)
 
 ### 3. Verify Configuration (PowerShell)
 
@@ -93,10 +99,18 @@ python simulator.py
 
 Expected output:
 ```text
-Connecting to <your-ats-endpoint>.iot.us-east-1.amazonaws.com...
+Connecting to <your-ats-endpoint>.iot.us-east-1.amazonaws.com with Client ID 'basicPubSub'...
+[INFO] Connection successfully established to <your-ats-endpoint>.iot.us-east-1.amazonaws.com.
 Connected!
-Published: {'temperature': 25.6, 'status': 'active'} to sdk/test/python
-Published: {'temperature': 25.6, 'status': 'active'} to sdk/test/python
+Publishing packet #1 (seq 1): {"device_id": "basicPubSub", "seq": 1, "timestamp": 1726415500, "temperature": 25.82, "status": "active"}
+  --> [ACK] Packet #1 confirmed by broker (QoS 1 PUBACK received).
+Publishing packet #2 (seq 2): {"device_id": "basicPubSub", "seq": 2, "timestamp": 1726415505, "temperature": 24.64, "status": "active"}
+  --> [ACK] Packet #2 confirmed by broker (QoS 1 PUBACK received).
+^C
+Interrupt signal received. Initiating graceful shutdown...
+Disconnecting from AWS IoT Core...
+[INFO] Connection closed cleanly.
+Disconnected cleanly.
 ```
 
 ---
